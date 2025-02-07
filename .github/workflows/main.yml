@@ -27,24 +27,24 @@ jobs:
 
       # Cache Docker layers (optional)
       - name: Cache Docker layers
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      # Build and test (no target specified)
+      # Build and test
       - name: Build and test
         uses: docker/build-push-action@v6
         with:
           load: true
-          file: ./Dockerfile  # Path to Dockerfile in the root directory
+          file: ./Dockerfile
 
-      # Build and push (for prod)
+      # Build and push to Docker Hub (use lowercase for the tag)
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
+          tags: ${{ vars.DOCKER_USERNAME }}/tutorialrepo:latest  # Use lowercase for the tag
