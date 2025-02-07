@@ -34,19 +34,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      # Build and test
+      # Build and test (no target specified)
       - name: Build and test
         uses: docker/build-push-action@v6
         with:
-          target: test
           load: true
-          file: ./Dockerfile  # Ensure the correct Dockerfile path
+          file: ./Dockerfile  # Path to Dockerfile in the root directory
 
-      # Build and push
+      # Build and push (for prod)
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          target: prod
           tags: ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
